@@ -3,7 +3,11 @@
  *
  * Copyright 1990, 1998  The Open Group
  *
- * All Rights Reserved.
+ * Permission to use, copy, modify, distribute, and sell this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * the above copyright notice appear in all copies and that both that
+ * copyright notice and this permission notice appear in supporting
+ * documentation.
  * 
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -26,6 +30,8 @@
  *   by Andreas Stolcke <stolcke@icsi.berkeley.edu>
  */
 
+/* $XFree86: xc/programs/xdm/sessreg.c,v 3.19 2002/12/07 20:31:04 herrb Exp $ */
+
 /*
  * sessreg
  *
@@ -42,24 +48,41 @@
  */
 
 
+# include	"dm.h"
+
 # include	<X11/Xos.h>
 # include	<X11/Xfuncs.h>
 # include	<stdio.h>
 # include	<utmp.h>
 
-#if defined(SYSV) || defined(_SEQUENT_)
+#if defined(SYSV) || defined(SVR4) || defined(Lynx) || defined(__QNX__) || defined(__DARWIN__) || defined(_SEQUENT_)
 #define NO_LASTLOG
 #endif
 
+#ifdef CSRG_BASED
+#include <sys/param.h>
+#endif
+
 #ifndef NO_LASTLOG
-# ifndef CSRG_BASED
+# ifdef CSRG_BASED
+#  if (BSD < 199103)
+#   include	<lastlog.h>
+#  endif
+# else
 #  include	<lastlog.h>
 # endif
 # include	<pwd.h>
 #endif
 
 #if defined(SVR4) || defined(linux)
-#define SYSV		/* nice System V utmp interface still the same */
+#define SYSV
+#endif
+
+#ifdef CSRG_BASED
+#if !defined(__FreeBSD__) && !defined(__OpenBSD__)
+/* *BSD doesn't like a ':0' type entry in utmp */
+#define NO_UTMP
+#endif
 #endif
 
 #ifndef WTMP_FILE
@@ -91,17 +114,14 @@
 # endif
 #endif
 
-#ifdef X_NOT_STDC_ENV
-#define Time_t long
-extern Time_t time ();
-#else
 #include <time.h>
 #define Time_t time_t
-#endif
 #ifdef X_NOT_POSIX
 extern long	lseek ();
 extern char	*ttyname ();
 #endif
+
+static void set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int addp);
 
 int	wflag, uflag, lflag;
 char	*wtmp_file, *utmp_file, *line;
@@ -111,7 +131,7 @@ int	utmp_none, wtmp_none;
  * maintainers, these arguments are accepted but ignored for sysV
  */
 int	hflag, sflag, xflag, tflag;
-char	*host_name;
+char	*host_name = NULL;
 int	slot_number;
 char	*xservers_file, *ttys_file;
 char	*user_name;
@@ -123,7 +143,14 @@ int	llog_none, Lflag;
 
 char	*program_name;
 
-usage (x)
+#ifndef SYSV
+static int findslot (char *line_name, char *host_name, int addp, int slot);
+static int Xslot (char *ttys_file, char *servers_file, char *tty_line,
+		  char *host_name, int addp);
+#endif
+
+static int
+usage (int x)
 {
 	if (x) {
 		fprintf (stderr, "%s: usage %s {-a -d} [-w wtmp-file] [-u utmp-file]", program_name, program_name);
@@ -138,10 +165,8 @@ usage (x)
 	return x;
 }
 
-char *
-getstring (avp, flagp)
-char	***avp;
-int	*flagp;
+static char *
+getstring (char ***avp, int *flagp)
 {
 	char	**a = *avp;
 
@@ -154,9 +179,9 @@ int	*flagp;
 	return *a;
 }
 
-syserr (x, s)
-int	x;
-char	*s;
+#ifndef SYSV
+static int
+syserr (int x, char *s)
 {
 	if (x == -1) {
 		perror (s);
@@ -164,10 +189,10 @@ char	*s;
 	}
 	return x;
 }
+#endif
 
-sysnerr (x, s)
-int	x;
-char	*s;
+static int
+sysnerr (int x, char *s)
 {
 	if (x == 0) {
 		perror (s);
@@ -176,9 +201,8 @@ char	*s;
 	return x;
 }
 
-main (argc, argv)
-int	argc;
-char	**argv;
+int
+main (int argc, char **argv)
 {
 #ifndef SYSV
 	int		utmp;
@@ -244,13 +268,17 @@ char	**argv;
 	/* set up default file names */
 	if (!wflag)
 		wtmp_file = WTMP_FILE;
+#ifndef NO_UTMP
 	if (!uflag)
 		utmp_file = UTMP_FILE;
+#else
+	utmp_none = 1;
+#endif
 #ifndef NO_LASTLOG
 	if (!Lflag)
 		llog_file = LLOG_FILE;
 #endif
-#if !defined(SYSV) && !defined(linux)
+#if !defined(SYSV) && !defined(linux) && !defined(__QNX__)
 	if (!tflag)
 		ttys_file = TTYS_FILE;
 	if (!sflag && !utmp_none) {
@@ -261,14 +289,14 @@ char	**argv;
 	}
 #endif
 	if (!lflag) {
-		sysnerr ((int) (line_tmp = ttyname (0)), "ttyname");
+		sysnerr ((line_tmp = ttyname (0)) != NULL, "ttyname");
 		line = strrchr(line_tmp, '/');
 		if (line)
 			line = line + 1;
 		else
 			line = line_tmp;
 	}
-	current_time = time ((Time_t *) 0);
+	time (&current_time);
 	set_utmp (&utmp_entry, line, user_name, host_name, current_time, aflag);
 	if (!utmp_none) {
 #ifdef SYSV
@@ -301,11 +329,13 @@ char	**argv;
 	        struct passwd *pwd = getpwnam(user_name);
 
 	        sysnerr( pwd != NULL, "get user id");
-	        llog = open (llog_file, O_WRONLY);
+	        llog = open (llog_file, O_RDWR);
 
 		if (llog != -1) {
 			struct lastlog ll;
 
+			sysnerr (lseek(llog, (long) pwd->pw_uid*sizeof(ll), 0)
+				        != -1, "seeking lastlog entry");
 			bzero((char *)&ll, sizeof(ll));
 			ll.ll_time = current_time;
 			if (line)
@@ -313,7 +343,6 @@ char	**argv;
 			if (host_name)
 			 (void) strncpy (ll.ll_host, host_name, sizeof (ll.ll_host));
 
-			sysnerr (lseek(llog, (long) pwd->pw_uid*sizeof(ll), 0) != -1, "seeking lastlog entry");
 			sysnerr (write (llog, (char *) &ll, sizeof (ll))
 				        == sizeof (ll), "write lastlog entry");
 			close (llog);
@@ -327,10 +356,8 @@ char	**argv;
  * fill in the appropriate records of the utmp entry
  */
 
-set_utmp (u, line, user, host, date, addp)
-struct utmp	*u;
-char		*line, *user, *host;
-Time_t		date;
+static void
+set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int addp)
 {
 	if (line)
 		(void) strncpy (u->ut_line, line, sizeof (u->ut_line));
@@ -365,7 +392,8 @@ Time_t		date;
 		u->ut_pid = 0;
 		u->ut_type = DEAD_PROCESS;
 	}
-#else
+#endif
+#if (!defined(SYSV) && !defined(__QNX__)) || defined(linux)
 	if (addp && host)
 		(void) strncpy (u->ut_host, host, sizeof (u->ut_host));
 	else
@@ -384,12 +412,9 @@ Time_t		date;
  * otherwise use the tty_line argument (i.e., the tty name).
  */
 
-Xslot (ttys_file, servers_file, tty_line, host_name, addp)
-char	*ttys_file;
-char	*servers_file;
-char	*tty_line;
-char	*host_name;
-int	addp;
+static int
+Xslot (char *ttys_file, char *servers_file, char *tty_line, char *host_name,
+       int addp)
 {
 	FILE	*ttys, *servers;
 	int	c;
@@ -401,14 +426,15 @@ int	addp;
 	char	*pos;
 
 	/* remove screen number from the display name */
-	strcpy(disp_name, host_name ? host_name : tty_line);
+	memset(disp_name, 0, sizeof(disp_name));
+	strncpy(disp_name, host_name ? host_name : tty_line, sizeof(disp_name)-1);
 	pos = strrchr(disp_name, ':');
 	if (pos) {
 	    pos = strchr(pos, '.');
 	    if (pos)
 		*pos = '\0';
 	}
-	sysnerr (ttys = fopen (ttys_file, "r"), ttys_file);
+	sysnerr ((int)(long)(ttys = fopen (ttys_file, "r")), ttys_file);
 	while ((c = getc (ttys)) != EOF)
 		if (c == '\n') {
 			++slot;
@@ -418,7 +444,7 @@ int	addp;
 	if (!column0)
 		++slot;
 	(void) fclose (ttys);
-	sysnerr (servers = fopen (servers_file, "r"), servers_file);
+	sysnerr ((int)(long)(servers = fopen (servers_file, "r")), servers_file);
 
 	len = strlen (disp_name);
 	column0 = 1;
@@ -446,11 +472,8 @@ int	addp;
  * past the regular tty entries if necessary, reusing existing entries
  * (identified by (line,hostname)) if possible.
  */
-findslot (line_name, host_name, addp, slot)
-char	*line_name;
-char	*host_name;
-int	addp;
-int	slot;
+static int
+findslot (char *line_name, char *host_name, int addp, int slot)
 {
 	int	utmp;
 	struct	utmp entry;
@@ -470,9 +493,13 @@ int	slot;
 
 	while (read (utmp, (char *) &entry, sizeof (entry)) == sizeof (entry)) {
 		if (strncmp(entry.ut_line, line_name,
-			sizeof(entry.ut_line)) == 0 &&
+			sizeof(entry.ut_line)) == 0 
+#ifndef __QNX__
+                    &&
 		    strncmp(entry.ut_host, host_name,
-			sizeof(entry.ut_host)) == 0) {
+			sizeof(entry.ut_host)) == 0
+#endif
+                   ) {
 			found = 1;
 			break;
 		}
