@@ -359,6 +359,7 @@ main (int argc, char **argv)
 static void
 set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int addp)
 {
+	bzero (u, sizeof (*u));
 	if (line)
 		(void) strncpy (u->ut_line, line, sizeof (u->ut_line));
 	else
