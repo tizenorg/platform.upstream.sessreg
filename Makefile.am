@@ -25,3 +25,7 @@ sessreg_LDADD = $(SESSREG_LIBS)
 
 sessreg_SOURCES =	\
         sessreg.c
+
+
+dist_man1_MANS = \
+        sessreg.man
