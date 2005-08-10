@@ -48,8 +48,6 @@
  */
 
 
-# include	"dm.h"
-
 # include	<X11/Xos.h>
 # include	<X11/Xfuncs.h>
 # include	<stdio.h>
