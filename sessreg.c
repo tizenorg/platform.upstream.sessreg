@@ -103,10 +103,10 @@
 #ifdef HAVE_CONFIG_H
 # ifndef HAVE_LASTLOG_H
 #  define NO_LASTLOG
-# else /* Imake */
-#if defined(SYSV) || defined(SVR4) || defined(Lynx) || defined(__QNX__) || defined(__DARWIN__) || defined(_SEQUENT_)
-#define NO_LASTLOG
-#endif
+# endif
+#else /* Imake */
+# if defined(SYSV) || (defined(SVR4) && !defined(sun)) || defined(Lynx) || defined(__QNX__) || defined(__DARWIN__) || defined(_SEQUENT_)
+#  define NO_LASTLOG
 # endif
 #endif
 
