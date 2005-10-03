@@ -125,7 +125,7 @@
 # include	<pwd.h>
 #endif
 
-#if defined(__SVR4) || defined(SVR4) || defined(linux)
+#if defined(__SVR4) || defined(SVR4) || defined(linux) || defined(__GLIBC__)
 #define SYSV
 #endif
 
