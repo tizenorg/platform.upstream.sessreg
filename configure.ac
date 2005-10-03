@@ -34,6 +34,8 @@ AC_PROG_INSTALL
 
 AC_CHECK_HEADERS([lastlog.h utmpx.h sys/param.h])
 
+AC_SYS_LARGEFILE
+
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(SESSREG, xproto)
 AC_SUBST(SESSREG_CFLAGS)

@@ -26,6 +26,13 @@ sessreg_LDADD = $(SESSREG_LIBS)
 sessreg_SOURCES =	\
         sessreg.c
 
+XORGRELSTRING = @PACKAGE_STRING@
+  XORGMANNAME = X Version 11
 
-dist_man1_MANS = \
-        sessreg.man
+sessreg.1: sessreg.man
+	sed 's/__xorgversion__/"$(XORGRELSTRING)" "$(XORGMANNAME)"/' \
+	< sessreg.man > sessreg.1
+
+man1_MANS = sessreg.1
+CLEANFILES = $(man1_MANS)
+EXTRA_DIST = sessreg.man
