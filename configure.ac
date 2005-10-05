@@ -33,6 +33,11 @@ AC_PROG_CC
 AC_PROG_INSTALL
 
 AC_CHECK_HEADERS([lastlog.h utmpx.h sys/param.h])
+AC_CHECK_MEMBER([struct utmpx.ut_syslen],
+		HAVE_SYSLEN=1,
+		HAVE_SYSLEN=0)
+AC_DEFINE_UNQUOTED(HAVE_UTMPX_UT_SYSLEN,$HAVE_SYSLEN,
+		   [utmpx structure includes ut_syslen field])
 
 AC_SYS_LARGEFILE
 

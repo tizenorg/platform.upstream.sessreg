@@ -29,9 +29,9 @@ sessreg_SOURCES =	\
 XORGRELSTRING = @PACKAGE_STRING@
   XORGMANNAME = X Version 11
 
-sessreg.1: sessreg.man
+sessreg.1: $(srcdir)/sessreg.man
 	sed 's/__xorgversion__/"$(XORGRELSTRING)" "$(XORGMANNAME)"/' \
-	< sessreg.man > sessreg.1
+	< $(srcdir)/sessreg.man > sessreg.1
 
 man1_MANS = sessreg.1
 CLEANFILES = $(man1_MANS)

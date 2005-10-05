@@ -1,0 +1,7 @@
+2005-10-06  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+
+	* Makefile.am:
+	Get sessreg.man from $(srcdir) to fix make distcheck
+
+	* configure.ac:
+	Add check for utmpx.ut_syslen structure member
