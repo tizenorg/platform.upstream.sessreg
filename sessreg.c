@@ -92,12 +92,15 @@
 #ifndef HAVE_CONFIG_H /* Imake fallback - hardcode platforms with utmpx */
 # if (defined(sun) && defined (__SVR4))
 #  define HAVE_UTMPX_H
+#  define HAVE_UTMPX_UT_SYSLEN 1
 # endif
 #endif
 
 #ifdef HAVE_UTMPX_H
-# include <utmpx.h>
-# define USE_UTMPX
+# if HAVE_UTMPX_UT_SYSLEN
+#  include <utmpx.h>
+#  define USE_UTMPX
+# endif
 #endif
 
 #ifdef HAVE_CONFIG_H
