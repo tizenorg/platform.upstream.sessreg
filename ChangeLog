@@ -1,3 +1,8 @@
+2005-10-17  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+
+	* Makefile.am:
+	Fixed man page processing
+
 2005-10-06  Kevin E. Martin  <kem-at-freedesktop-dot-org>
 
 	* Makefile.am:
