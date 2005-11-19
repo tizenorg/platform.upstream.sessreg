@@ -21,7 +21,6 @@
 bin_PROGRAMS = sessreg
 
 sessreg_CFLAGS = $(SESSREG_CFLAGS)
-sessreg_LDADD = $(SESSREG_LIBS)
 
 sessreg_SOURCES =	\
         sessreg.c
