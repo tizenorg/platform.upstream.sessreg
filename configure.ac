@@ -21,7 +21,7 @@ dnl
 dnl Process this file with autoconf to create configure.
 
 AC_PREREQ([2.57])
-AC_INIT(sessreg, [0.99.1],
+AC_INIT(sessreg, [0.99.2],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
 	sessreg)
 AM_INIT_AUTOMAKE([dist-bzip2])
