@@ -188,11 +188,12 @@ main (int argc, char **argv)
 	int		utmp;
 #endif
 	char		*line_tmp;
+#ifndef USE_UTMPX	
 	int		wtmp;
+#endif	
 	Time_t		current_time;
 	struct utmp	utmp_entry;
 #ifdef USE_UTMPX
-	int		wtmpx;	
 	struct utmpx	utmpx_entry;
 #endif
 
