@@ -25,7 +25,7 @@
 .\"
 .\" $XFree86: xc/programs/xdm/sessreg.man,v 1.7 2001/04/23 20:31:09 dawes Exp $
 .\"
-.TH SESSREG 1 __xorgversion__
+.TH SESSREG __appmansuffix__ __xorgversion__
 .SH NAME
 sessreg \- manage utmp/wtmp entries for non-init clients
 .SH SYNOPSIS
@@ -73,13 +73,13 @@ exist in System V.  This option is also ignored by the System V version of
 In Xstartup, place a call like:
 .nf
 
-       sessreg -a -l $DISPLAY -x /usr/X11R6/lib/xdm/Xservers $USER
+       sessreg -a -l $DISPLAY -x /etc/X11/xdm/Xservers $USER
 
 .fi
 and in Xreset:
 .nf
 
-       sessreg -d -l $DISPLAY -x /usr/X11R6/lib/xdm/Xservers $USER
+       sessreg -d -l $DISPLAY -x /etc/X11/xdm/Xservers $USER
 .fi
 .SH OPTIONS
 .IP "\fB-w\fP \fIwtmp-file\fP"
@@ -118,6 +118,6 @@ This session should be added to utmp/wtmp.
 This session should be deleted from utmp/wtmp.  One of -a/-d must
 be specified.
 .SH "SEE ALSO"
-xdm(1)
+xdm(__appmansuffix__)
 .SH AUTHOR
 Keith Packard, MIT X Consortium
