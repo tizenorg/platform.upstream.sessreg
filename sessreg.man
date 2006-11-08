@@ -47,17 +47,20 @@ entries for xdm sessions.
 .PP
 System V has a better interface to utmp than BSD; it
 dynamically allocates entries in the file, instead of writing them at fixed
-positions indexed by position in __ttys_file__.
+positions indexed by position in 
+.BR __ttys_file__ .
 .PP
 To manage BSD-style utmp files, \fIsessreg\fP has two strategies.  In
-conjunction with xdm, the -x option counts the number of lines in __ttys_file__
+conjunction with xdm, the -x option counts the number of lines in 
+.B __ttys_file__
 and then adds to that the number of the line in the Xservers file which
 specifies the display.  The display name must be specified as the
 "line-name" using the -l option.  This sum is used as the "slot-number" in
 the utmp file that this entry will be written at.  In the more general case, 
 the -s option specifies the slot-number directly.  If for some strange reason
-your system uses a file other that __ttys_file__ to manage init, the -t option
-can direct
+your system uses a file other than
+.B __ttys_file__ 
+to manage init, the -t option can direct
 \fIsessreg\fP to look elsewhere for a count of terminal sessions.
 .PP
 Conversely, System V managers will not ever need to use these options (-x,
@@ -83,10 +86,12 @@ and in Xreset:
 .fi
 .SH OPTIONS
 .IP "\fB-w\fP \fIwtmp-file\fP"
-This specifies an alternate wtmp file, instead of __wtmp_file__.
+This specifies an alternate wtmp file, instead of 
+.BR __wtmp_file__ .
 The special name "none" disables writing records to the wtmp file.
 .IP "\fB-u\fP \fIutmp-file\fP"
-This specifies an alternate utmp file, instead of __utmp_file__.
+This specifies an alternate utmp file, instead of 
+.BR __utmp_file__ .
 The special name "none" disables writing records to the utmp file.
 .IP "\fB-l\fP \fIline-name\fP"
 This describes the "line" name of the entry.  For terminal sessions,
@@ -100,7 +105,8 @@ This is set for BSD hosts to indicate that the session was initiated from
 a remote host.  In typical xdm usage, this options is not used.
 .IP "\fB-s\fP \fIslot-number\fP"
 Each potential session has a unique slot number in BSD systems, most are
-identified by the position of the \fIline-name\fP in the __ttys_file__ file.
+identified by the position of the \fIline-name\fP in the 
+.BR __ttys_file__ file.
 This option overrides the default position determined with ttyslot(3).
 This option is inappropriate for use with xdm, the -x option is more useful.
 .IP "\fB-x\fP \fIXservers-file\fP"
