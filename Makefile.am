@@ -63,3 +63,11 @@ sessreg.$(APP_MAN_SUFFIX): filenames.sed
 
 filenames.sed: filenames.sed.c
 	$(CPP) $(DEFS) $(srcdir)/filenames.sed.c | grep 's\|__' > $@
+
+if LINT
+ALL_LINT_FLAGS=$(LINT_FLAGS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+                $(AM_CPPFLAGS) $(CPPFLAGS)
+
+lint:
+	$(LINT) $(ALL_LINT_FLAGS) $(sessreg_SOURCES)
+endif LINT
