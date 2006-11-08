@@ -32,7 +32,7 @@ appmandir = $(APP_MAN_DIR)
 
 appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@)
 
-EXTRA_DIST = $(appman_PRE) filenames.sed.c
+EXTRA_DIST = $(appman_PRE) filenames.sed.c ChangeLog
 CLEANFILES = $(appman_DATA) filenames.sed
 
 SED = sed
@@ -71,3 +71,10 @@ ALL_LINT_FLAGS=$(LINT_FLAGS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 lint:
 	$(LINT) $(ALL_LINT_FLAGS) $(sessreg_SOURCES)
 endif LINT
+
+MAINTAINERCLEANFILES=ChangeLog
+
+ChangeLog:
+	git-log > ChangeLog
+
+dist-hook: ChangeLog
