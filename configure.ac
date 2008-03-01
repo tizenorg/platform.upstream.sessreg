@@ -47,7 +47,7 @@ AC_DEFINE_UNQUOTED(HAVE_UTMPX_UT_SYSLEN,$HAVE_SYSLEN,
 AC_SYS_LARGEFILE
 
 # Checks for pkg-config packages
-PKG_CHECK_MODULES(SESSREG, x11)
+PKG_CHECK_MODULES(SESSREG, xproto)
 AC_SUBST(SESSREG_CFLAGS)
 
 # Allow checking code with lint, sparse, etc.
