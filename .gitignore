@@ -18,3 +18,7 @@ sessreg
 sessreg.1
 stamp-h1
 *~
+*.o
+ChangeLog
+sessreg-*.tar.*
+tags
