@@ -18,7 +18,12 @@
 # define TTYS_FILE "/etc/ttys"
 #endif
 
+#ifndef LLOG_FILE
+# define LLOG_FILE "/var/log/lastlog"
+#endif
+
 s|__utmp_manpage__|UTM|g
 s|__utmp_file__|UTF|g
 s|__wtmp_file__|WTF|g
 s|__ttys_file__|TTYS_FILE|g
+s|__lastlog_file__|LLOG_FILE|g

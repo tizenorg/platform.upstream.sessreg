@@ -66,6 +66,7 @@
  *
  * usage: sessreg [ -w <wtmp-file> ] [ -u <utmp-file> ]
  *		  [ -l <line> ]
+ *		  [ -L <lastlog-file> ]		      / #ifndef NO_LASTLOG
  *		  [ -h <host-name> ]				/ BSD only
  *		  [ -s <slot-number> ] [ -x Xservers-file ]	/ BSD only
  *		  [ -t <ttys-file> ]				/ BSD only
