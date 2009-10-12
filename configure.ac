@@ -29,14 +29,15 @@ AM_MAINTAINER_MODE
 
 AM_CONFIG_HEADER(config.h)
 
-# Require xorg-macros: XORG_CWARNFLAGS, XORG_CHANGELOG
-m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.2 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.2)
+# Require xorg-macros 1.3 or later: XORG_DEFAULT_OPTIONS
+m4_ifndef([XORG_MACROS_VERSION],
+	  [m4_fatal([must install xorg-macros 1.3 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.3)
 
 AC_PROG_CC
 AC_PROG_INSTALL
 
-XORG_CWARNFLAGS
+XORG_DEFAULT_OPTIONS
 
 AC_CHECK_HEADERS([lastlog.h utmpx.h sys/param.h])
 AC_CHECK_MEMBER([struct utmpx.ut_syslen],
@@ -50,14 +51,9 @@ AC_SYS_LARGEFILE
 
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(SESSREG, xproto)
-SESSREG_CFLAGS="$CWARNFLAGS $SESSREG_CFLAGS"
 AC_SUBST(SESSREG_CFLAGS)
 
 # Allow checking code with lint, sparse, etc.
 XORG_WITH_LINT
-
-XORG_MANPAGE_SECTIONS
-XORG_RELEASE_VERSION
-XORG_CHANGELOG
 
 AC_OUTPUT([Makefile])
