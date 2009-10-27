@@ -32,7 +32,7 @@ appmandir = $(APP_MAN_DIR)
 
 appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@)
 
-EXTRA_DIST = $(appman_PRE) filenames.sed.c ChangeLog
+EXTRA_DIST = $(appman_PRE) filenames.sed.c 
 CLEANFILES = $(appman_DATA) filenames.sed
 
 SED = sed
@@ -74,7 +74,6 @@ lint:
 	$(LINT) $(ALL_LINT_FLAGS) $(sessreg_SOURCES)
 endif LINT
 
-MAINTAINERCLEANFILES=ChangeLog
 
 .PHONY: ChangeLog
 
