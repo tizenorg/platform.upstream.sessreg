@@ -24,7 +24,7 @@ AC_PREREQ([2.57])
 AC_INIT(sessreg, [1.0.5],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
 	sessreg)
-AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
 
 AM_CONFIG_HEADER(config.h)
