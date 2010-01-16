@@ -51,13 +51,15 @@
 
 #include <sys/types.h>
 #include <time.h>
-#include <utmp.h>
+
+#ifdef HAVE_UTMP_H
+# include <utmp.h>
+# define USE_UTMP
+#endif
 
 #ifdef HAVE_UTMPX_H
-# if HAVE_UTMPX_UT_SYSLEN
-#  include <utmpx.h>
-#  define USE_UTMPX
-# endif
+# include <utmpx.h>
+# define USE_UTMPX
 #endif
 
 #ifdef HAVE_SYS_PARAM_H

@@ -39,13 +39,14 @@ AC_PROG_INSTALL
 
 XORG_DEFAULT_OPTIONS
 
-AC_CHECK_HEADERS([lastlog.h utmpx.h sys/param.h])
+AC_CHECK_HEADERS([lastlog.h utmp.h utmpx.h sys/param.h])
 AC_CHECK_MEMBER([struct utmpx.ut_syslen],
 		HAVE_SYSLEN=1,
 		HAVE_SYSLEN=0,
 		[#include <utmpx.h>])
 AC_DEFINE_UNQUOTED(HAVE_UTMPX_UT_SYSLEN,$HAVE_SYSLEN,
 		   [utmpx structure includes ut_syslen field])
+AC_CHECK_FUNCS([updwtmpx utmpxname])
 
 AC_SYS_LARGEFILE
 
