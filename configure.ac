@@ -40,12 +40,9 @@ m4_ifndef([XORG_MACROS_VERSION],
 	  [m4_fatal([must install xorg-macros 1.8 or later before running autoconf/autogen])])
 XORG_MACROS_VERSION(1.8)
 XORG_DEFAULT_OPTIONS
-XORG_WITH_LINT
 
 # Checks for programs.
-AC_PROG_CC
-AC_PROG_CC_C99
-AC_PROG_INSTALL
+XORG_WITH_LINT
 
 # Checks for header files.
 AC_CHECK_HEADERS([lastlog.h utmp.h utmpx.h sys/param.h])
@@ -61,6 +58,5 @@ AC_CHECK_FUNCS([updwtmpx utmpxname])
 
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(SESSREG, xproto)
-AC_SUBST(SESSREG_CFLAGS)
 
 AC_OUTPUT([Makefile])
