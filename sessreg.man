@@ -104,7 +104,7 @@ This describes the "line" name of the entry.  For terminal sessions,
 this is the final pathname segment of the terminal device filename
 (e.g. ttyd0).  For X sessions, it should probably be the local display name
 given to the users session (e.g. :0).  If none is specified, the
-terminal name will be determined with ttyname(3) and stripped of leading
+terminal name will be determined with ttyname(__libmansuffix__) and stripped of leading
 components.
 .IP "\fB-h\fP \fIhost-name\fP"
 This is set for BSD hosts to indicate that the session was initiated from
@@ -113,7 +113,7 @@ a remote host.  In typical xdm usage, this options is not used.
 Each potential session has a unique slot number in BSD systems, most are
 identified by the position of the \fIline-name\fP in the
 .BR __ttys_file__ file.
-This option overrides the default position determined with ttyslot(3).
+This option overrides the default position determined with ttyslot(__libmansuffix__).
 This option is inappropriate for use with xdm, the -x option is more useful.
 .IP "\fB-x\fP \fIXservers-file\fP"
 As X sessions are one-per-display, and each display is entered in this file,
