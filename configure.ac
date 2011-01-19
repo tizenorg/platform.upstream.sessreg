@@ -59,4 +59,7 @@ AC_CHECK_FUNCS([updwtmpx utmpxname])
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(SESSREG, xproto)
 
-AC_OUTPUT([Makefile])
+AC_CONFIG_FILES([
+	Makefile
+	man/Makefile])
+AC_OUTPUT
