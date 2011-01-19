@@ -22,12 +22,10 @@ dnl Process this file with autoconf to create configure.
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
-AC_INIT(sessreg, [1.0.6],
-	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
-	sessreg)
+AC_INIT([sessreg], [1.0.6],
+	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [sessreg])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
-AC_CANONICAL_HOST
 AC_USE_SYSTEM_EXTENSIONS
 AC_SYS_LARGEFILE
 
@@ -40,8 +38,6 @@ m4_ifndef([XORG_MACROS_VERSION],
 	  [m4_fatal([must install xorg-macros 1.8 or later before running autoconf/autogen])])
 XORG_MACROS_VERSION(1.8)
 XORG_DEFAULT_OPTIONS
-
-# Checks for programs.
 XORG_WITH_LINT
 
 # Checks for header files.
