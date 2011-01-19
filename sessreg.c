@@ -477,7 +477,7 @@ set_utmpx (struct utmpx *u, const char *line, const char *user,
                         (void) strncpy (u->ut_line, line, sizeof (u->ut_line));
 
 		strncpy(u->ut_host, line, sizeof(u->ut_host));
-#if HAVE_UTMPX_UT_SYSLEN
+#ifdef HAVE_STRUCT_UTMPX_UT_SYSLEN
 		u->ut_syslen = strlen(line); 
 #endif
 	}
