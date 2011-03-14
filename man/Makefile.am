@@ -7,7 +7,7 @@ EXTRA_DIST = $(appman_PRE) filenames.sed.c
 CLEANFILES = $(appman_DATA) filenames.sed
 SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
-AM_CPPFLAGS = -I..
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 filenames.sed: filenames.sed.c
 	$(AM_V_GEN)$(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	    $(AM_CPPFLAGS) $(CPPFLAGS) $(srcdir)/filenames.sed.c | \
