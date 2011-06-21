@@ -6,10 +6,10 @@
  * the above copyright notice appear in all copies and that both that
  * copyright notice and this permission notice appear in supporting
  * documentation.
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -17,7 +17,7 @@
  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
- * 
+ *
  * Except as contained in this notice, the name of The Open Group shall
  * not be used in advertising or otherwise to promote the sale, use or
  * other dealings in this Software without prior written authorization
@@ -65,7 +65,7 @@
  *		  [ -h <host-name> ]				/ BSD only
  *		  [ -s <slot-number> ] [ -x Xservers-file ]	/ BSD only
  *		  [ -t <ttys-file> ]				/ BSD only
- *	          [ -a ] [ -d ] user-name
+ *		  [ -a ] [ -d ] user-name
  *
  * one of -a or -d must be specified
  */
@@ -189,9 +189,9 @@ main (int argc, char **argv)
 	int		utmp;
 #endif
 	char		*line_tmp;
-#ifndef USE_UTMPX	
+#ifndef USE_UTMPX
 	int		wtmp;
-#endif	
+#endif
 	Time_t		current_time;
 #ifdef USE_UTMP
 	struct utmp	utmp_entry;
@@ -304,24 +304,24 @@ main (int argc, char **argv)
 	   UtmpxIdOpen to work */
 # ifdef HAVE_UTMPXNAME
 	if (utmpx_file != NULL) {
-	        utmpxname (utmpx_file);
+		utmpxname (utmpx_file);
 	}
 # endif
 	set_utmpx (&utmpx_entry, line, user_name,
 		   host_name, current_time, aflag);
-#endif	
+#endif
 
 	if (!utmp_none) {
 #ifdef USE_UTMPX
 # ifdef HAVE_UTMPX_NAME
-	    if (utmpx_file != NULL)
+		if (utmpx_file != NULL)
 # endif
-	    {
-		setutxent ();
-		(void) getutxid (&utmpx_entry);
-		pututxline (&utmpx_entry);
-		endutxent ();
-	    }
+		{
+			setutxent ();
+			(void) getutxid (&utmpx_entry);
+			pututxline (&utmpx_entry);
+			endutxent ();
+		}
 #endif
 #ifdef USE_UTMP
 # ifdef SYSV
@@ -335,7 +335,7 @@ main (int argc, char **argv)
 		if (utmp != -1) {
 			syserr ((int) lseek (utmp, (long) slot_number * sizeof (struct utmp), 0), "lseek");
 			sysnerr (write (utmp, (char *) &utmp_entry, sizeof (utmp_entry))
-				        == sizeof (utmp_entry), "write utmp entry");
+					== sizeof (utmp_entry), "write utmp entry");
 			close (utmp);
 		}
 # endif
@@ -352,24 +352,24 @@ main (int argc, char **argv)
 		wtmp = open (wtmp_file, O_WRONLY|O_APPEND);
 		if (wtmp != -1) {
 			sysnerr (write (wtmp, (char *) &utmp_entry, sizeof (utmp_entry))
-				        == sizeof (utmp_entry), "write wtmp entry");
+					== sizeof (utmp_entry), "write wtmp entry");
 			close (wtmp);
 		}
-#endif		
+#endif
 	}
 #ifndef NO_LASTLOG
 	if (aflag && !llog_none) {
-	        int llog;
-	        struct passwd *pwd = getpwnam(user_name);
+		int llog;
+		struct passwd *pwd = getpwnam(user_name);
 
-	        sysnerr( pwd != NULL, "get user id");
-	        llog = open (llog_file, O_RDWR);
+		sysnerr( pwd != NULL, "get user id");
+		llog = open (llog_file, O_RDWR);
 
 		if (llog != -1) {
 			struct lastlog ll;
 
 			sysnerr (lseek(llog, (long) pwd->pw_uid*sizeof(ll), 0)
-				        != -1, "seeking lastlog entry");
+					!= -1, "seeking lastlog entry");
 			bzero((char *)&ll, sizeof(ll));
 			ll.ll_time = current_time;
 			if (line)
@@ -378,7 +378,7 @@ main (int argc, char **argv)
 			 (void) strncpy (ll.ll_host, host_name, sizeof (ll.ll_host));
 
 			sysnerr (write (llog, (char *) &ll, sizeof (ll))
-				        == sizeof (ll), "write lastlog entry");
+					== sizeof (ll), "write lastlog entry");
 			close (llog);
 		}
 	}
@@ -447,17 +447,17 @@ UtmpxIdOpen( char *utmpId )
 	int    status = 1;	/* return code                             */
 
 	setutxent();
- 
+
 	while ( (u = getutxent()) != NULL ) {
-		
+
 		if ( (strncmp(u->ut_id, utmpId, 4) == 0 ) &&
 		     u->ut_type != DEAD_PROCESS ) {
-			
+
 			status = 0;
 			break;
 		}
 	}
- 
+
 	endutxent();
 	return (status);
 }
@@ -469,77 +469,77 @@ set_utmpx (struct utmpx *u, const char *line, const char *user,
 	static const char letters[] =
 	       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        if (line)
+	if (line)
 	{
-                if(strcmp(line, ":0") == 0)
-                        (void) strcpy(u->ut_line, "console");
-                else
-                        (void) strncpy (u->ut_line, line, sizeof (u->ut_line));
+		if(strcmp(line, ":0") == 0)
+			(void) strcpy(u->ut_line, "console");
+		else
+			(void) strncpy (u->ut_line, line, sizeof (u->ut_line));
 
 		strncpy(u->ut_host, line, sizeof(u->ut_host));
 #ifdef HAVE_STRUCT_UTMPX_UT_SYSLEN
-		u->ut_syslen = strlen(line); 
+		u->ut_syslen = strlen(line);
 #endif
 	}
-        else
-                bzero (u->ut_line, sizeof (u->ut_line));
-        if (addp && user)
-                (void) strncpy (u->ut_user, user, sizeof (u->ut_user));
-        else
-                bzero (u->ut_user, sizeof (u->ut_user));
+	else
+		bzero (u->ut_line, sizeof (u->ut_line));
+	if (addp && user)
+		(void) strncpy (u->ut_user, user, sizeof (u->ut_user));
+	else
+		bzero (u->ut_user, sizeof (u->ut_user));
 
-        if (line) {
-                int     i;
-                /*
-                 * this is a bit crufty, but
-                 * follows the apparent conventions in
-                 * the ttys file.  ut_id is only 4 bytes
-                 * long, and the last 4 bytes of the line
-                 * name are written into it, left justified.
-                 */
-                i = strlen (line);
-                if (i >= sizeof (u->ut_id))
-                        i -= sizeof (u->ut_id);
-                else
-                        i = 0;
-                (void) strncpy (u->ut_id, line + i, sizeof (u->ut_id));
+	if (line) {
+		int     i;
+		/*
+		 * this is a bit crufty, but
+		 * follows the apparent conventions in
+		 * the ttys file.  ut_id is only 4 bytes
+		 * long, and the last 4 bytes of the line
+		 * name are written into it, left justified.
+		 */
+		i = strlen (line);
+		if (i >= sizeof (u->ut_id))
+			i -= sizeof (u->ut_id);
+		else
+			i = 0;
+		(void) strncpy (u->ut_id, line + i, sizeof (u->ut_id));
 
 		/* make sure there is no entry using identical ut_id */
 		if (!UtmpxIdOpen(u->ut_id) && addp) {
-                        int limit = sizeof(letters) - 1;
-                        int t = 0;
+			int limit = sizeof(letters) - 1;
+			int t = 0;
 
-                        u->ut_id[1] = line[i];
-                        u->ut_id[2] = line[i+1];
-                        u->ut_id[3] = line[i+2];
-                        do {
-                                u->ut_id[0] = letters[t];
-                                t++;
-                        } while (!UtmpxIdOpen(u->ut_id) && (t < limit));
-                }
-                if (!addp && strstr(line, ":") != NULL) {
-                        struct utmpx *tmpu;             
+			u->ut_id[1] = line[i];
+			u->ut_id[2] = line[i+1];
+			u->ut_id[3] = line[i+2];
+			do {
+				u->ut_id[0] = letters[t];
+				t++;
+			} while (!UtmpxIdOpen(u->ut_id) && (t < limit));
+		}
+		if (!addp && strstr(line, ":") != NULL) {
+			struct utmpx *tmpu;
 
-                        while ( (tmpu = getutxent()) != NULL ) {
-                                if ( (strcmp(tmpu->ut_host, line) == 0 ) &&
-                                        tmpu->ut_type != DEAD_PROCESS ) {
-                                        strncpy(u->ut_id, tmpu->ut_id,
+			while ( (tmpu = getutxent()) != NULL ) {
+				if ( (strcmp(tmpu->ut_host, line) == 0 ) &&
+					tmpu->ut_type != DEAD_PROCESS ) {
+					strncpy(u->ut_id, tmpu->ut_id,
 						sizeof(u->ut_id));
-                                        break;
-                                }
-                        }
-                        endutxent();
-                }
-        } else
-                bzero (u->ut_id, sizeof (u->ut_id));
-	
-        if (addp) {
-                u->ut_pid = getppid ();
-                u->ut_type = USER_PROCESS;
-        } else {
-                u->ut_pid = 0;
-                u->ut_type = DEAD_PROCESS;
-        }
+					break;
+				}
+			}
+			endutxent();
+		}
+	} else
+		bzero (u->ut_id, sizeof (u->ut_id));
+
+	if (addp) {
+		u->ut_pid = getppid ();
+		u->ut_type = USER_PROCESS;
+	} else {
+		u->ut_pid = 0;
+		u->ut_type = DEAD_PROCESS;
+	}
 	u->ut_tv.tv_sec = date;
 	u->ut_tv.tv_usec = 0;
 }
@@ -636,13 +636,13 @@ findslot (char *line_name, char *host_name, int addp, int slot)
 
 	while (read (utmp, (char *) &entry, sizeof (entry)) == sizeof (entry)) {
 		if (strncmp(entry.ut_line, line_name,
-			sizeof(entry.ut_line)) == 0 
+			sizeof(entry.ut_line)) == 0
 #ifndef __QNX__
-                    &&
+		    &&
 		    strncmp(entry.ut_host, host_name,
 			sizeof(entry.ut_host)) == 0
 #endif
-                   ) {
+		   ) {
 			found = 1;
 			break;
 		}
