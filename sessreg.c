@@ -313,7 +313,7 @@ main (int argc, char **argv)
 
 	if (!utmp_none) {
 #ifdef USE_UTMPX
-# ifdef HAVE_UTMPX_NAME
+# ifdef HAVE_UTMPXNAME
 		if (utmpx_file != NULL)
 # endif
 		{
