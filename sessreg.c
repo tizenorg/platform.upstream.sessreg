@@ -188,7 +188,6 @@ main (int argc, char **argv)
 #if defined(USE_UTMP) && !defined(SYSV)
 	int		utmp;
 #endif
-	char		*line_tmp;
 #ifndef USE_UTMPX
 	int		wtmp;
 #endif
@@ -287,12 +286,9 @@ main (int argc, char **argv)
 	}
 #endif
 	if (!lflag) {
-		sysnerr ((line_tmp = ttyname (0)) != NULL, "ttyname");
-		line = strrchr(line_tmp, '/');
-		if (line)
-			line = line + 1;
-		else
-			line = line_tmp;
+		sysnerr ((line = ttyname (0)) != NULL, "ttyname");
+		if (strncmp(line, "/dev/", 5) == 0)
+			line += 5;
 	}
 	time (&current_time);
 #ifdef USE_UTMP
