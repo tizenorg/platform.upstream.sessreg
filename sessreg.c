@@ -366,7 +366,7 @@ main (int argc, char **argv)
 
 			sysnerr (lseek(llog, (long) pwd->pw_uid*sizeof(ll), 0)
 					!= -1, "seeking lastlog entry");
-			bzero((char *)&ll, sizeof(ll));
+			memset(&ll, 0, sizeof(ll));
 			ll.ll_time = current_time;
 			if (line)
 			 (void) strncpy (ll.ll_line, line, sizeof (ll.ll_line));
@@ -390,15 +390,15 @@ main (int argc, char **argv)
 static void
 set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int addp)
 {
-	bzero (u, sizeof (*u));
+	memset (u, 0, sizeof (*u));
 	if (line)
 		(void) strncpy (u->ut_line, line, sizeof (u->ut_line));
 	else
-		bzero (u->ut_line, sizeof (u->ut_line));
+		memset (u->ut_line, 0, sizeof (u->ut_line));
 	if (addp && user)
 		(void) strncpy (u->ut_name, user, sizeof (u->ut_name));
 	else
-		bzero (u->ut_name, sizeof (u->ut_name));
+		memset (u->ut_name, 0, sizeof (u->ut_name));
 #ifdef HAVE_STRUCT_UTMP_UT_ID
 	if (line) {
 		int	i;
@@ -416,7 +416,7 @@ set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int a
 			i = 0;
 		(void) strncpy (u->ut_id, line + i, sizeof (u->ut_id));
 	} else
-		bzero (u->ut_id, sizeof (u->ut_id));
+		memset (u->ut_id, 0, sizeof (u->ut_id));
 #endif
 #ifdef HAVE_STRUCT_UTMP_UT_PID
 	if (addp)
@@ -434,7 +434,7 @@ set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int a
 	if (addp && host)
 		(void) strncpy (u->ut_host, host, sizeof (u->ut_host));
 	else
-		bzero (u->ut_host, sizeof (u->ut_host));
+		memset (u->ut_host, 0, sizeof (u->ut_host));
 #endif
 	u->ut_time = date;
 }
@@ -483,11 +483,11 @@ set_utmpx (struct utmpx *u, const char *line, const char *user,
 #endif
 	}
 	else
-		bzero (u->ut_line, sizeof (u->ut_line));
+		memset (u->ut_line, 0, sizeof (u->ut_line));
 	if (addp && user)
 		(void) strncpy (u->ut_user, user, sizeof (u->ut_user));
 	else
-		bzero (u->ut_user, sizeof (u->ut_user));
+		memset (u->ut_user, 0, sizeof (u->ut_user));
 
 	if (line) {
 		int     i;
@@ -532,7 +532,7 @@ set_utmpx (struct utmpx *u, const char *line, const char *user,
 			endutxent();
 		}
 	} else
-		bzero (u->ut_id, sizeof (u->ut_id));
+		memset (u->ut_id, 0, sizeof (u->ut_id));
 
 	if (addp) {
 		u->ut_pid = getppid ();
