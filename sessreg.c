@@ -399,7 +399,7 @@ set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int a
 		(void) strncpy (u->ut_name, user, sizeof (u->ut_name));
 	else
 		bzero (u->ut_name, sizeof (u->ut_name));
-#ifdef SYSV
+#ifdef HAVE_STRUCT_UTMP_UT_ID
 	if (line) {
 		int	i;
 		/*
@@ -417,15 +417,20 @@ set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int a
 		(void) strncpy (u->ut_id, line + i, sizeof (u->ut_id));
 	} else
 		bzero (u->ut_id, sizeof (u->ut_id));
-	if (addp) {
-		u->ut_pid = getppid ();
-		u->ut_type = USER_PROCESS;
-	} else {
-		u->ut_pid = 0;
-		u->ut_type = DEAD_PROCESS;
-	}
 #endif
-#if (!defined(SYSV) && !defined(__QNX__)) || defined(linux)
+#ifdef HAVE_STRUCT_UTMP_UT_PID
+	if (addp)
+		u->ut_pid = getppid ();
+	else
+		u->ut_pid = 0;
+#endif
+#ifdef HAVE_STRUCT_UTMP_UT_TYPE
+	if (addp)
+		u->ut_type = USER_PROCESS;
+	else
+		u->ut_type = DEAD_PROCESS;
+#endif
+#ifdef HAVE_STRUCT_UTMP_UT_HOST
 	if (addp && host)
 		(void) strncpy (u->ut_host, host, sizeof (u->ut_host));
 	else
@@ -633,7 +638,7 @@ findslot (char *line_name, char *host_name, int addp, int slot)
 	while (read (utmp, (char *) &entry, sizeof (entry)) == sizeof (entry)) {
 		if (strncmp(entry.ut_line, line_name,
 			sizeof(entry.ut_line)) == 0
-#ifndef __QNX__
+#ifdef HAVE_STRUCT_UTMP_UT_HOST
 		    &&
 		    strncmp(entry.ut_host, host_name,
 			sizeof(entry.ut_host)) == 0

@@ -44,6 +44,11 @@ XORG_WITH_LINT
 AC_CHECK_HEADERS([lastlog.h utmp.h utmpx.h sys/param.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_MEMBERS([
+	struct utmp.ut_host,
+	struct utmp.ut_id,
+	struct utmp.ut_pid,
+	struct utmp.ut_type], [], [], [#include <utmp.h>])
 AC_CHECK_MEMBERS([struct utmpx.ut_syslen], [], [], [#include <utmpx.h>])
 
 # Checks for library functions.
