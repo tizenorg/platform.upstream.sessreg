@@ -48,7 +48,10 @@ AC_CHECK_MEMBERS([
 	struct utmp.ut_host,
 	struct utmp.ut_id,
 	struct utmp.ut_pid,
-	struct utmp.ut_type], [], [], [#include <utmp.h>])
+	struct utmp.ut_type], [], [], [
+	#include <sys/types.h>
+	#include <utmp.h>
+	])
 AC_CHECK_MEMBERS([struct utmpx.ut_syslen], [], [], [#include <utmpx.h>])
 
 # Checks for library functions.
