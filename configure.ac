@@ -55,7 +55,7 @@ AC_CHECK_MEMBERS([
 AC_CHECK_MEMBERS([struct utmpx.ut_syslen], [], [], [#include <utmpx.h>])
 
 # Checks for library functions.
-AC_CHECK_FUNCS([updwtmpx utmpxname])
+AC_CHECK_FUNCS([pututline updwtmpx utmpxname])
 
 # Obtain compiler/linker options for depedencies
 PKG_CHECK_MODULES(SESSREG, xproto)

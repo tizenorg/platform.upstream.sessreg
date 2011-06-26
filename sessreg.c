@@ -77,10 +77,6 @@
 # include	<stdio.h>
 # include	<stdlib.h>
 
-#if defined(__SVR4) || defined(SVR4) || defined(linux) || defined(__GLIBC__)
-# define SYSV
-#endif
-
 #include <time.h>
 #define Time_t time_t
 
@@ -111,7 +107,7 @@ static int utmp_none, wtmp_none;
  */
 static int hflag, sflag, xflag, tflag;
 static char *host_name = NULL;
-#ifdef USE_UTMP
+#if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
 static int slot_number;
 #endif
 static char *xservers_file, *ttys_file;
@@ -124,7 +120,7 @@ static int llog_none, Lflag;
 
 static char *program_name;
 
-#ifndef SYSV
+#if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
 static int findslot (char *line_name, char *host_name, int addp, int slot);
 static int Xslot (char *ttys_file, char *servers_file, char *tty_line,
 		  char *host_name, int addp);
@@ -160,7 +156,7 @@ getstring (char ***avp, int *flagp)
 	return *a;
 }
 
-#ifndef SYSV
+#if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
 static int
 syserr (int x, const char *s)
 {
@@ -185,7 +181,7 @@ sysnerr (int x, const char *s)
 int
 main (int argc, char **argv)
 {
-#if defined(USE_UTMP) && !defined(SYSV)
+#if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
 	int		utmp;
 #endif
 #ifndef USE_UTMPX
@@ -229,7 +225,7 @@ main (int argc, char **argv)
 			host_name = getstring (&argv, &hflag);
 			break;
 		case 's':
-#ifdef USE_UTMP
+#if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
 			slot_number = atoi (getstring (&argv, &sflag));
 #endif
 			break;
@@ -275,7 +271,7 @@ main (int argc, char **argv)
 	if (!Lflag)
 		llog_file = LLOG_FILE;
 #endif
-#if defined(USE_UTMP) && !defined(SYSV) && !defined(linux) && !defined(__QNX__)
+#if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
 	if (!tflag)
 		ttys_file = TTYS_FILE;
 	if (!sflag && !utmp_none) {
@@ -320,7 +316,7 @@ main (int argc, char **argv)
 		}
 #endif
 #ifdef USE_UTMP
-# ifdef SYSV
+# ifdef HAVE_PUTUTLINE
 		utmpname (utmp_file);
 		setutent ();
 		(void) getutid (&utmp_entry);
@@ -546,7 +542,7 @@ set_utmpx (struct utmpx *u, const char *line, const char *user,
 }
 #endif /* USE_UTMPX */
 
-#if defined(USE_UTMP) && !defined(SYSV)
+#if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
 /*
  * compute the slot-number for an X display.  This is computed
  * by counting the lines in /etc/ttys and adding the line-number
