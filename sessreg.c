@@ -78,16 +78,15 @@
 # include	<stdlib.h>
 
 #include <time.h>
-#define Time_t time_t
 
 #ifdef USE_UTMP
 static void set_utmp (struct utmp *u, char *line, char *user, char *host,
-		      Time_t date, int addp);
+		      time_t date, int addp);
 #endif
 
 #ifdef USE_UTMPX
 static void set_utmpx (struct utmpx *u, const char *line, const char *user,
-		       const char *host, Time_t date, int addp);
+		       const char *host, time_t date, int addp);
 #endif
 
 static int wflag, uflag, lflag;
@@ -188,7 +187,7 @@ main (int argc, char **argv)
 #ifndef USE_UTMPX
 	int		wtmp;
 #endif
-	Time_t		current_time;
+	time_t		current_time;
 #ifdef USE_UTMP
 	struct utmp	utmp_entry;
 #endif
@@ -385,7 +384,7 @@ main (int argc, char **argv)
 
 #ifdef USE_UTMP
 static void
-set_utmp (struct utmp *u, char *line, char *user, char *host, Time_t date, int addp)
+set_utmp (struct utmp *u, char *line, char *user, char *host, time_t date, int addp)
 {
 	memset (u, 0, sizeof (*u));
 	if (line)
@@ -462,7 +461,7 @@ UtmpxIdOpen( char *utmpId )
 
 static void
 set_utmpx (struct utmpx *u, const char *line, const char *user,
-	   const char *host, Time_t date, int addp)
+	   const char *host, time_t date, int addp)
 {
 	static const char letters[] =
 	       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
