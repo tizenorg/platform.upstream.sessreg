@@ -72,11 +72,10 @@
 
 #include "sessreg.h"
 
-# include	<X11/Xos.h>
-# include	<X11/Xfuncs.h>
-# include	<stdio.h>
-# include	<stdlib.h>
-
+#include <X11/Xos.h>
+#include <X11/Xfuncs.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 #ifdef USE_UTMP
@@ -486,7 +485,7 @@ set_utmpx (struct utmpx *u, const char *line, const char *user,
 		memset (u->ut_user, 0, sizeof (u->ut_user));
 
 	if (line) {
-		int     i;
+		int	i;
 		/*
 		 * this is a bit crufty, but
 		 * follows the apparent conventions in
@@ -570,9 +569,9 @@ Xslot (char *ttys_file, char *servers_file, char *tty_line, char *host_name,
 	strncpy(disp_name, host_name ? host_name : tty_line, sizeof(disp_name)-1);
 	pos = strrchr(disp_name, ':');
 	if (pos) {
-	    pos = strchr(pos, '.');
-	    if (pos)
-		*pos = '\0';
+		pos = strchr(pos, '.');
+		if (pos)
+			*pos = '\0';
 	}
 	sysnerr ((int)(long)(ttys = fopen (ttys_file, "r")), ttys_file);
 	while ((c = getc (ttys)) != EOF)
