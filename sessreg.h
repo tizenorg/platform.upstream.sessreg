@@ -67,19 +67,12 @@
 # include <sys/param.h>
 #endif
 
-#ifndef HAVE_LASTLOG_H
-# define NO_LASTLOG
-#endif
-
-#ifndef NO_LASTLOG
-# ifdef CSRG_BASED
-#  if (BSD < 199103)
-#   include	<lastlog.h>
-#  endif
-# else
-#  include	<lastlog.h>
+#if defined(HAVE_STRUCT_LASTLOG) && defined(HAVE_PWD_H)
+# ifdef HAVE_LASTLOG_H
+#  include <lastlog.h>
 # endif
-# include	<pwd.h>
+# include <pwd.h>
+# define USE_LASTLOG
 #endif
 
 #ifdef CSRG_BASED

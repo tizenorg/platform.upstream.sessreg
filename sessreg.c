@@ -61,7 +61,7 @@
  *
  * usage: sessreg [ -w <wtmp-file> ] [ -u <utmp-file> ]
  *		  [ -l <line> ]
- *		  [ -L <lastlog-file> ]		      / #ifndef NO_LASTLOG
+ *		  [ -L <lastlog-file> ]		      / #ifdef USE_LASTLOG
  *		  [ -h <host-name> ]				/ BSD only
  *		  [ -s <slot-number> ] [ -x Xservers-file ]	/ BSD only
  *		  [ -t <ttys-file> ]				/ BSD only
@@ -112,7 +112,7 @@ static int slot_number;
 static char *xservers_file, *ttys_file;
 static char *user_name;
 static int aflag, dflag;
-#ifndef NO_LASTLOG
+#ifdef USE_LASTLOG
 static char *llog_file;
 static int llog_none, Lflag;
 #endif
@@ -130,7 +130,7 @@ usage (int x)
 {
 	if (x) {
 		fprintf (stderr, "%s: usage %s {-a -d} [-w wtmp-file] [-u utmp-file]", program_name, program_name);
-#ifndef NO_LASTLOG
+#ifdef USE_LASTLOG
 		fprintf (stderr, " [-L lastlog-file]");
 #endif
 		fprintf (stderr, "\n");
@@ -207,7 +207,7 @@ main (int argc, char **argv)
 			if (!strcmp (utmp_file, "none"))
 				utmp_none = 1;
 			break;
-#ifndef NO_LASTLOG
+#ifdef USE_LASTLOG
 		case 'L':
 			llog_file = getstring (&argv, &Lflag);
 			if (!strcmp (llog_file, "none"))
@@ -266,7 +266,7 @@ main (int argc, char **argv)
 #else
 	utmp_none = 1;
 #endif
-#ifndef NO_LASTLOG
+#ifdef USE_LASTLOG
 	if (!Lflag)
 		llog_file = LLOG_FILE;
 #endif
@@ -348,7 +348,7 @@ main (int argc, char **argv)
 		}
 #endif
 	}
-#ifndef NO_LASTLOG
+#ifdef USE_LASTLOG
 	if (aflag && !llog_none) {
 		int llog;
 		struct passwd *pwd = getpwnam(user_name);

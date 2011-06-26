@@ -41,7 +41,7 @@ XORG_DEFAULT_OPTIONS
 XORG_WITH_LINT
 
 # Checks for header files.
-AC_CHECK_HEADERS([lastlog.h utmp.h utmpx.h sys/param.h])
+AC_CHECK_HEADERS([lastlog.h pwd.h utmp.h utmpx.h sys/param.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_MEMBERS([
@@ -53,6 +53,16 @@ AC_CHECK_MEMBERS([
 	#include <utmp.h>
 	])
 AC_CHECK_MEMBERS([struct utmpx.ut_syslen], [], [], [#include <utmpx.h>])
+AC_CHECK_TYPES([
+	struct lastlog], [], [],[
+	#include <sys/types.h>
+	#ifdef HAVE_UTMP_H
+	#include <utmp.h>
+	#endif
+	#ifdef HAVE_LASTLOG_H
+	#include <lastlog.h>
+	#endif
+	])
 
 # Checks for library functions.
 AC_CHECK_FUNCS([pututline updwtmpx utmpxname])
