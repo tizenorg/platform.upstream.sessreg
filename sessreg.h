@@ -103,18 +103,13 @@
 #  define UTMP_FILE	"/etc/utmp"
 # endif
 #endif
-#ifndef NO_LASTLOG
-# ifndef LLOG_FILE
-#  ifdef _PATH_LASTLOG
-#   define LLOG_FILE	_PATH_LASTLOG
-#  else
-#   define LLOG_FILE	"/usr/adm/lastlog"
-#  endif
+#ifndef LLOG_FILE
+# ifdef _PATH_LASTLOG
+#  define LLOG_FILE	_PATH_LASTLOG
+# else
+#  define LLOG_FILE	"/usr/adm/lastlog"
 # endif
 #endif
-#ifndef SYSV
-# ifndef TTYS_FILE
-#  define TTYS_FILE	"/etc/ttys"
-# endif
+#ifndef TTYS_FILE
+# define TTYS_FILE	"/etc/ttys"
 #endif
-
