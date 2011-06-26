@@ -105,9 +105,10 @@ static int utmp_none, wtmp_none;
  * BSD specific variables.  To make life much easier for Xstartup/Xreset
  * maintainers, these arguments are accepted but ignored for sysV
  */
-static int hflag, sflag, xflag, tflag;
+static int hflag, xflag, tflag;
 static char *host_name = NULL;
 #if defined(USE_UTMP) && !defined(HAVE_PUTUTLINE)
+static int sflag;
 static int slot_number;
 #endif
 static char *xservers_file, *ttys_file;
