@@ -89,13 +89,14 @@ static void set_utmpx (struct utmpx *u, const char *line, const char *user,
 #endif
 
 static int wflag, uflag, lflag;
-static char *wtmp_file, *utmp_file, *line;
+static const char *wtmp_file, *utmp_file;
+static char *line;
 #ifdef USE_UTMPX
 #ifdef HAVE_UPDWTMPX
-static char *wtmpx_file = NULL;
+static const char *wtmpx_file = NULL;
 #endif
 #ifdef HAVE_UTMPXNAME
-static char *utmpx_file = NULL;
+static const char *utmpx_file = NULL;
 #endif
 #endif
 static int utmp_none, wtmp_none;
@@ -113,7 +114,7 @@ static char *xservers_file, *ttys_file;
 static char *user_name;
 static int aflag, dflag;
 #ifdef USE_LASTLOG
-static char *llog_file;
+static const char *llog_file;
 static int llog_none, Lflag;
 #endif
 
