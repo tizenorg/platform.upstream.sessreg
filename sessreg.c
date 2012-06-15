@@ -99,6 +99,13 @@ static const char *wtmpx_file = NULL;
 static const char *utmpx_file = NULL;
 #endif
 #endif
+#ifndef WTMPX_FILE
+#define WTMPX_FILE	_PATH_WTMPX
+#endif
+#ifndef UTMPX_FILE
+#define UTMPX_FILE	_PATH_UTMPX
+#endif
+
 static int utmp_none, wtmp_none;
 /*
  * BSD specific variables.  To make life much easier for Xstartup/Xreset
