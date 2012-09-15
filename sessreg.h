@@ -106,3 +106,10 @@
 #ifndef TTYS_FILE
 # define TTYS_FILE	"/etc/ttys"
 #endif
+
+#ifndef WTMPX_FILE
+# define WTMPX_FILE	_PATH_WTMPX
+#endif
+#ifndef UTMPX_FILE
+# define UTMPX_FILE	_PATH_UTMPX
+#endif
