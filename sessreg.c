@@ -258,16 +258,12 @@ main (int argc, char **argv)
 		wtmpx_file = WTMPX_FILE;
 #endif
 	}
-#ifndef NO_UTMP
 	if (!uflag) {
 		utmp_file = UTMP_FILE;
 #if defined(USE_UTMPX) && defined(HAVE_UTMPXNAME)
 		utmpx_file = UTMPX_FILE;
 #endif
 	}
-#else
-	utmp_none = 1;
-#endif
 #ifdef USE_LASTLOG
 	if (!Lflag)
 		llog_file = LLOG_FILE;
