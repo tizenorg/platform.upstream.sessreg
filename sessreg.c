@@ -90,7 +90,6 @@ static void set_utmpx (struct utmpx *u, const char *line, const char *user,
 
 static int wflag, uflag, lflag;
 static const char *wtmp_file, *utmp_file;
-static char *line;
 #ifdef USE_UTMPX
 #ifdef HAVE_UPDWTMPX
 static const char *wtmpx_file = NULL;
@@ -195,6 +194,7 @@ main (int argc, char **argv)
 #ifdef USE_UTMPX
 	struct utmpx	utmpx_entry;
 #endif
+	char *		line = NULL;
 
 	program_name = argv[0];
 	while (*++argv && **argv == '-') {
