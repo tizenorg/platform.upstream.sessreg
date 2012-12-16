@@ -357,7 +357,7 @@ main (int argc, char **argv)
 		if (llog != -1) {
 			struct lastlog ll;
 
-			sysnerr (lseek(llog, (long) pwd->pw_uid*sizeof(ll), 0)
+			sysnerr (lseek(llog, (long) (pwd->pw_uid*sizeof(ll)), 0)
 					!= -1, "seeking lastlog entry");
 			memset(&ll, 0, sizeof(ll));
 			ll.ll_time = current_time;
@@ -394,7 +394,7 @@ set_utmp (struct utmp *u, char *line, char *user, char *host, time_t date, int a
 		memset (u->ut_name, 0, sizeof (u->ut_name));
 #ifdef HAVE_STRUCT_UTMP_UT_ID
 	if (line) {
-		int	i;
+		size_t	i;
 		/*
 		 * this is a bit crufty, but
 		 * follows the apparent conventions in
@@ -483,7 +483,7 @@ set_utmpx (struct utmpx *u, const char *line, const char *user,
 		memset (u->ut_user, 0, sizeof (u->ut_user));
 
 	if (line) {
-		int	i;
+		size_t	i;
 		/*
 		 * this is a bit crufty, but
 		 * follows the apparent conventions in
