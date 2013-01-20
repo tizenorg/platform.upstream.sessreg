@@ -136,7 +136,7 @@ usage (int x)
                          " [-L lastlog-file]"
 #endif
                          "\n"
-                         "             [-t ttys-file] [-l line-name] [-h host-name]\n"
+                         "             [-t ttys-file] [-l line-name] [-h host-name] [-V]\n"
                          "             [-s slot-number] [-x servers-file] user-name\n",
                          program_name, program_name);
 		exit (1);
@@ -241,6 +241,9 @@ main (int argc, char **argv)
 		case 'd':
 			dflag++;
 			break;
+		case 'V':
+			printf("%s\n", PACKAGE_STRING);
+			exit (0);
 		default:
 			usage (1);
 		}
