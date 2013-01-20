@@ -130,13 +130,15 @@ static int
 usage (int x)
 {
 	if (x) {
-		fprintf (stderr, "%s: usage %s {-a -d} [-w wtmp-file] [-u utmp-file]", program_name, program_name);
+		fprintf (stderr,
+                         "%s: usage %s {-a -d} [-w wtmp-file] [-u utmp-file]"
 #ifdef USE_LASTLOG
-		fprintf (stderr, " [-L lastlog-file]");
+                         " [-L lastlog-file]"
 #endif
-		fprintf (stderr, "\n");
-		fprintf (stderr, "             [-t ttys-file] [-l line-name] [-h host-name]\n");
-		fprintf (stderr, "             [-s slot-number] [-x servers-file] user-name\n");
+                         "\n"
+                         "             [-t ttys-file] [-l line-name] [-h host-name]\n"
+                         "             [-s slot-number] [-x servers-file] user-name\n",
+                         program_name, program_name);
 		exit (1);
 	}
 	return x;
