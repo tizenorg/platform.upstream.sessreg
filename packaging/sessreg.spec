@@ -6,6 +6,7 @@ Summary:        Utility to manage utmp/wtmp entries for X sessions
 Url:            http://xorg.freedesktop.org/
 Group:          System/X11/Utilities
 Source0:        http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
+Source1001: 	sessreg.manifest
 BuildRequires:  pkg-config
 BuildRequires:  pkgconfig(xorg-macros) >= 1.4
 BuildRequires:  pkgconfig(xproto)
@@ -17,6 +18,7 @@ other display managers such as gdm or kdm.
 
 %prep
 %setup -q
+cp %{SOURCE1001} .
 
 %build
 %configure
@@ -26,6 +28,7 @@ make %{?_smp_mflags}
 %make_install
 
 %files
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %doc COPYING
 %{_bindir}/sessreg
