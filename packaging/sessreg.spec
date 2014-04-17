@@ -1,5 +1,5 @@
 Name:           sessreg
-Version:        1.0.7
+Version:        1.0.8
 Release:        1
 License:        MIT
 Summary:        Utility to manage utmp/wtmp entries for X sessions
@@ -21,7 +21,7 @@ other display managers such as gdm or kdm.
 cp %{SOURCE1001} .
 
 %build
-%configure
+%autogen
 make %{?_smp_mflags}
 
 %install
