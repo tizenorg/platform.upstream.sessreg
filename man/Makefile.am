@@ -11,6 +11,7 @@ AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 filenames.sed: filenames.sed.c
 	$(AM_V_GEN)$(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	    $(AM_CPPFLAGS) $(CPPFLAGS) $(srcdir)/filenames.sed.c | \
+	    grep -v "^#" | $(SED) -e '/^s|.*|g$$/!{/s|__/{N;N;s/[[:space:]]//g;}}' | \
 	    grep 's|__' > $@
 
 # String replacements in MAN_SUBSTS now come from xorg-macros.m4 via configure
